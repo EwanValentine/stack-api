@@ -10,7 +10,7 @@ import (
 )
 
 type API interface {
-	Init()
+	Init(registry registrar.Registry) *APIGateway
 	RegisterRoutes(routes Routes)
 	Run()
 }
@@ -24,7 +24,7 @@ type Route struct {
 	Name        string
 	Method      string
 	Pattern     string
-	HandlerFunc http.HandlerFunc
+	HandlerFunc Handler
 }
 
 type Routes []Route
@@ -44,14 +44,42 @@ func (api *APIGateway) RegisterRoutes(routes Routes) *mux.Router {
 	}
 
 	for _, route := range routes {
-		api.router.
-			Methods(route.Method).
-			Path(route.Pattern).
-			Name(route.Name).
-			Handler(route.HandlerFunc)
+		api.AddRoute(route)
 	}
 
 	return api.router
+}
+
+// AddRoute - Add a route
+func (api *APIGateway) AddRoute(route Route) {
+
+	if api.router == nil {
+		api.router = mux.NewRouter().StrictSlash(true)
+	}
+
+	handler := api.withContext(route.HandlerFunc)
+
+	api.router.
+		Methods(route.Method).
+		Path(route.Pattern).
+		Name(route.Name).
+		Handler(handler)
+}
+
+func (api *APIGateway) Get(path string, handler Handler) {
+	route := Route{
+		Method:      "GET",
+		Pattern:     path,
+		HandlerFunc: handler,
+	}
+	api.AddRoute(route)
+}
+
+func (api *APIGateway) withContext(next Handler) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := NewContext(w, r)
+		next(ctx)
+	})
 }
 
 func (api *APIGateway) Run() {
