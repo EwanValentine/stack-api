@@ -67,12 +67,36 @@ func (api *APIGateway) AddRoute(route Route) {
 }
 
 func (api *APIGateway) Get(path string, handler Handler) {
-	route := Route{
-		Method:      "GET",
+	route := api.buildRoute("GET", path, handler)
+	api.AddRoute(route)
+}
+
+func (api *APIGateway) Post(path string, handler Handler) {
+	route := api.buildRoute("POST", path, handler)
+	api.AddRoute(route)
+}
+
+func (api *APIGateway) Patch(path string, handler Handler) {
+	route := api.buildRoute("PATCH", path, handler)
+	api.AddRoute(route)
+}
+
+func (api *APIGateway) Put(path string, handler Handler) {
+	route := api.buildRoute("PUT", path, handler)
+	api.AddRoute(route)
+}
+
+func (api *APIGateway) Delete(path string, handler Handler) {
+	route := api.buildRoute("DELETE", path, handler)
+	api.AddRoute(route)
+}
+
+func (api *APIGateway) buildRoute(method, path string, handler Handler) {
+	return Route{
+		Method:      method,
 		Pattern:     path,
 		HandlerFunc: handler,
 	}
-	api.AddRoute(route)
 }
 
 func (api *APIGateway) withContext(next Handler) http.HandlerFunc {
