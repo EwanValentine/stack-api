@@ -91,7 +91,7 @@ func (api *APIGateway) Delete(path string, handler Handler) {
 	api.AddRoute(route)
 }
 
-func (api *APIGateway) buildRoute(method, path string, handler Handler) {
+func (api *APIGateway) buildRoute(method, path string, handler Handler) Route {
 	return Route{
 		Method:      method,
 		Pattern:     path,
