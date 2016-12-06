@@ -106,13 +106,44 @@ func (api *APIGateway) withContext(next Handler) http.HandlerFunc {
 	})
 }
 
-func (api *APIGateway) Run() {
-	var port string
-	port = os.Getenv("STACK_API_PORT")
-	if port == "" {
-		port = ":" + "8080"
+// ApiOption - Api option object
+type ApiOption struct {
+	port string
+}
+
+// ApiOptions - Option type
+type ApiOptions func(*ApiOption) error
+
+// SetPort - Sets API port
+func SetPort(port string) ApiOptions {
+	return func(opt *ApiOption) error {
+		opt.port = port
+		return nil
+	}
+}
+
+func (api *APIGateway) Run(options ...ApiOptions) {
+
+	opt := &ApiOption{}
+
+	for _, op := range options {
+		err := op(opt)
+		if err != nil {
+			log.Fatalf("Error rending configuration: %v", err)
+		}
 	}
 
+	port := ":8080"
+	envPort := os.Getenv("STACK_SERVICE_PORT")
+
+	if envPort != "" {
+		port = envPort
+	} else if opt.port != "" {
+		port = opt.port
+	}
+
+	log.Printf("Running on port: %v", port)
+
 	// Run
-	log.Fatal(http.ListenAndServe(os.Getenv("STACK_API_PORT"), api.router))
+	log.Fatal(http.ListenAndServe(port, api.router))
 }
