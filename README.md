@@ -25,7 +25,9 @@ func Index(c *api.Context) {
 
 // Stuff
 func Stuff(c *api.Context) {
-    fmt.Println(c.Params)
+    var data map[string]string
+    c.Bind(&data)
+    fmt.Println(data)
 }
 
 func main() {
