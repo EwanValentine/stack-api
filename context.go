@@ -70,3 +70,13 @@ func (c *Context) JSON(data interface{}, code int) {
 func (c *Context) SetHttpCode(code int) {
 	c.response.WriteHeader(code)
 }
+
+// Param - Get param by name
+func (c *Context) Param(name string) string {
+	return c.Params[name]
+}
+
+// Header - Get a header value
+func (c *Context) Header(name string) string {
+	return c.request.Header.Get(name)
+}
