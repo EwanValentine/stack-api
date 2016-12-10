@@ -6,6 +6,7 @@ import (
 	"os"
 
 	registrar "github.com/ewanvalentine/stack-registrar"
+	"github.com/ewanvalentine/stack-registrar/services"
 	"github.com/gorilla/mux"
 )
 
@@ -34,7 +35,7 @@ func Init(registry registrar.Registry) *APIGateway {
 }
 
 // Register - Register your API
-func (api *APIGateway) Register(service registrar.Service) error {
+func (api *APIGateway) Register(service services.Service) error {
 	return api.registry.Register(service)
 }
 
