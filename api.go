@@ -148,8 +148,9 @@ func (api *APIGateway) Run(options ...ApiOptions) {
 
 	// @todo - make this customisable
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"},
-		AllowCredentials: true,
+		AllowedOrigins:     []string{"*"},
+		AllowCredentials:   true,
+		OptionsPassthrough: true,
 	})
 
 	handler := c.Handler(api.router)
