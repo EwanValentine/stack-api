@@ -124,6 +124,7 @@ func SetPort(port string) ApiOptions {
 	}
 }
 
+// Run - Run api
 func (api *APIGateway) Run(options ...ApiOptions) {
 
 	opt := &ApiOption{}
@@ -151,6 +152,10 @@ func (api *APIGateway) Run(options ...ApiOptions) {
 		AllowedOrigins:     []string{"*"},
 		AllowCredentials:   true,
 		OptionsPassthrough: true,
+		AllowedMethods: []string{
+			"POST", "PUT", "PATCH",
+			"GET", "DELETE", "OPTIONS",
+		},
 	})
 
 	handler := c.Handler(api.router)
