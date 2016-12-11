@@ -146,7 +146,13 @@ func (api *APIGateway) Run(options ...ApiOptions) {
 
 	log.Printf("Running on port: %v", port)
 
-	handler := cors.Default().Handler(api.router)
+	// @todo - make this customisable
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowCredentials: true,
+	})
+
+	handler := c.Handler(api.router)
 
 	// Run
 	log.Fatal(http.ListenAndServe(port, handler))
