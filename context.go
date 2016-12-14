@@ -52,22 +52,6 @@ func (c *Context) Bind(payload interface{}) error {
 	return nil
 }
 
-// Bind - Bind's json data to empty struct.
-func (c *Context) Bind(payload interface{}) error {
-
-	// Decode body string into a string
-	decoder := json.NewDecoder(c.request.Body)
-	err := decoder.Decode(&payload)
-
-	if err != nil {
-		return err
-	}
-
-	defer c.request.Body.Close()
-
-	return nil
-}
-
 // JSON - Set header to JSON
 func (c *Context) JSON(data interface{}, code int) {
 	c.SetHttpCode(code)

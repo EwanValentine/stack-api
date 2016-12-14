@@ -100,6 +100,7 @@ func (api *APIGateway) buildRoute(method, path string, handler Handler) Route {
 	}
 }
 
+// withContext - Wraps a context object around each request
 func (api *APIGateway) withContext(next Handler) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := NewContext(w, r)
