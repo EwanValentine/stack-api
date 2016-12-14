@@ -151,6 +151,7 @@ func (api *APIGateway) Run(options ...ApiOptions) {
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},
 		AllowedHeaders: []string{"*"},
+		AllowedMethods: []string{"GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"},
 	})
 
 	handler := c.Handler(api.router)
