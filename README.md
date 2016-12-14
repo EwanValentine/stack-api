@@ -18,9 +18,7 @@ import (
 
 // Index handler
 func Index(c *api.Context) {
-    data := map[string]string{
-        "test": "testing",
-    }
+    data := api.D{"test": "testing"}
     c.JSON(data, 200)
 }
 
