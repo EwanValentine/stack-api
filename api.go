@@ -8,6 +8,7 @@ import (
 	registrar "github.com/ewanvalentine/stack-registrar"
 	"github.com/ewanvalentine/stack-registrar/services"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 type API interface {
@@ -122,6 +123,7 @@ func SetPort(port string) ApiOptions {
 	}
 }
 
+// Run - Run api
 func (api *APIGateway) Run(options ...ApiOptions) {
 
 	opt := &ApiOption{}
@@ -144,6 +146,14 @@ func (api *APIGateway) Run(options ...ApiOptions) {
 
 	log.Printf("Running on port: %v", port)
 
+	// @todo - make this customisable
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedHeaders: []string{"*"},
+	})
+
+	handler := c.Handler(api.router)
+
 	// Run
-	log.Fatal(http.ListenAndServe(port, api.router))
+	log.Fatal(http.ListenAndServe(port, handler))
 }
