@@ -80,13 +80,3 @@ func (c *Context) Param(name string) string {
 func (c *Context) Header(name string) string {
 	return c.Request.Header.Get(name)
 }
-
-// Param - Get param by name
-func (c *Context) Param(name string) string {
-	return c.Params[name]
-}
-
-// Header - Get a header value
-func (c *Context) Header(name string) string {
-	return c.request.Header.Get(name)
-}
