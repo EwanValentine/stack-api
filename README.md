@@ -13,6 +13,7 @@ import (
 
     api "github.com/ewanvalentine/stack-api"
     registrar "github.com/ewanvalentine/stack-registrar"
+    "github.com/ewanvalentine/stack-registrar/services"
 )
 
 // Index handler
@@ -27,7 +28,7 @@ func Index(c *api.Context) {
 func Stuff(c *api.Context) {
     var data map[string]string
     c.Bind(&data)
-    fmt.Println(data)
+    fmt.Println(api.D{"_message": "Got data"}, 200)
 }
 
 func main() {
@@ -37,10 +38,10 @@ func main() {
 
     // Create new app
     app := api.Init(registry)
-    err := app.Register(registrar.Service{
+    err := app.Register(services.Service{
         Name:     "test",
         Host:     "test.com",
-        Upstream: "localhost:8080",
+        Upstream: "http://localhost:8080",
     })
 
     // Some basic routes
