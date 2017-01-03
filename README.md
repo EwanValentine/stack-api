@@ -60,7 +60,7 @@ Stack // API lets you generate endpoint documentation as your write your endpoin
 
 To enable this feature, create a file `docs.html` in the root of your API codebase. Include a template within that file, such as... 
 
-```
+```html
 <!DOCTYPE html>
 <html>
   <head>
