@@ -1,6 +1,7 @@
 package api
 
 import (
+	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -17,6 +18,7 @@ type API interface {
 }
 
 type APIGateway struct {
+	routes   []Route
 	router   *mux.Router
 	registry registrar.Registry
 }
@@ -31,7 +33,7 @@ type Route struct {
 type Routes []Route
 
 func Init(registry registrar.Registry) *APIGateway {
-	return &APIGateway{nil, registry}
+	return &APIGateway{nil, nil, registry}
 }
 
 // Register - Register your API
@@ -57,6 +59,9 @@ func (api *APIGateway) AddRoute(route Route) {
 	if api.router == nil {
 		api.router = mux.NewRouter().StrictSlash(true)
 	}
+
+	// Keep track of routes.
+	api.routes = append(api.routes, route)
 
 	handler := api.withContext(route.HandlerFunc)
 
@@ -126,6 +131,18 @@ func SetPort(port string) ApiOptions {
 
 // Run - Run api
 func (api *APIGateway) Run(options ...ApiOptions) {
+
+	// Add API docs route
+	api.Get("/docs", func(c *Context) {
+		var templates = template.Must(
+			template.ParseFiles("./docs.html"),
+		)
+		templates.ExecuteTemplate(
+			c.Response,
+			"docs.html",
+			api.routes,
+		)
+	})
 
 	opt := &ApiOption{}
 
