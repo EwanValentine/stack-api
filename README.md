@@ -55,3 +55,31 @@ func main() {
 }
 ```
 
+## Self documenting API endpoints
+Stack // API lets you generate endpoint documentation as your write your endpoints. 
+
+To enable this feature, create a file `docs.html` in the root of your API codebase. Include a template within that file, such as... 
+
+```
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h1>Docs</h1>
+
+    <section>
+      {{range .}}
+        Name: {{.Name}}<br />
+        Route: {{.Pattern}}<br />
+        Method: {{.Method}}<br />
+        <br />
+      {{end}}
+    </section>
+  </body>
+</html>
+```
+
+This allows you to style your docs according to your companies branding etc. 
