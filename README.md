@@ -116,7 +116,7 @@ This allows you to style your docs according to your companies branding etc.
 ## CORS
 Stack handles CORS out-of-the-box. The default rules are... 
 
-```
+```go
 c := cors.New(cors.Options{
    AllowedHeaders: []string{"*"},
    AllowedMethods: []string{"GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"},       
