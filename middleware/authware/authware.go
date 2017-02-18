@@ -12,6 +12,7 @@
 package authware
 
 import (
+	"os"
 	"strings"
 
 	api "github.com/ewanvalentine/stack-api"
@@ -30,6 +31,12 @@ type Authware struct {
 // RequireAuth - 
 func (auth *Authware) RequireAuth(next api.Handler) api.Handler {
 	return func(c *api.Context) {
+
+		if os.Getenv("AUTH_ENABLED") == "false" {
+			next(c)
+			return
+		}
+
 		authHeader := c.Header("Authorization")
 
 		// If blank, check lower case value
