@@ -24,7 +24,7 @@ type Authenticator interface {
 
 // Authware - 
 type Authware struct {
-	service Authenticator
+	Service Authenticator
 }
 
 // RequireAuth - 
@@ -47,7 +47,7 @@ func (auth *Authware) RequireAuth(next api.Handler) api.Handler {
 		token := strings.Split(authHeader, " ")
 
 		// Validate token against service
-		isValid, err := auth.service.ValidateToken(token[1])
+		isValid, err := auth.Service.ValidateToken(token[1])
 
 		if err != nil || isValid == false {
 			c.JSON(
