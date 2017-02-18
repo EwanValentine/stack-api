@@ -127,3 +127,4 @@ c := cors.New(cors.Options{
 1. Make CORS rules customisable.
 2. Create new stack-registrar providers (Consul, etcd, zookeeper etc). 
 3. Make docs generation more customisable.
+4. Make route groups.
